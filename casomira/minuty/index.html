@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Časomíra -24s (bez sekund)</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white; /* bílé pozadí */
+    }
+    #clock {
+      font-family: Arial, sans-serif;
+      font-weight: normal; /* tenký text */
+      font-size: 120px;
+      color: black; /* černý text */
+    }
+  </style>
+</head>
+<body>
+  <div id="clock">00:00</div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+
+      // odečtení 24 sekund
+      now.setSeconds(now.getSeconds() - 24);
+
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+
+      // přidání nul před jednociferná čísla
+      if (hours < 10) hours = "0" + hours;
+      if (minutes < 10) minutes = "0" + minutes;
+
+      document.getElementById('clock').textContent = hours + ":" + minutes;
+    }
+
+    // první vykreslení hned po načtení
+    updateClock();
+    // aktualizace každých 30s (stačí pro minuty)
+    setInterval(updateClock, 30000);
+  </script>
+</body>
+</html>
