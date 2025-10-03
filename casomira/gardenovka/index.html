@@ -2,71 +2,37 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Scoreboard - Sparta vs Baník</title>
+  <title>Časomíra - čistý text</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      background: #ffffff; /* bílé pozadí */
+      background: #ffffff; /* pro test, v OBS můžeš dát transparentní */
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
-      font-family: Arial, sans-serif;
       margin: 0;
     }
 
-    .scoreboard {
-      display: flex;
-      align-items: flex-start;
-      font-weight: bold;
-    }
-
-    .team {
-      background: #333;
-      color: white;
-      padding: 10px 30px;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* středový blok (skóre + čas) */
-    .center-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .middle {
-      background: white;
-      color: black;
-      padding: 10px 40px;
-      font-size: 40px;   /* skóre velké */
-      font-weight: bold;
-      text-align: center;
-    }
-
     #timer {
-      background: #1976d2;
-      color: white;
-      font-size: 24px;   /* menší než skóre */
-      font-weight: bold;
-      padding: 6px 30px;
-      margin-top: 0;
-      text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+      color: #000000; /* můžeš změnit na #fff pro bílý text */
     }
 
-    .controls, .settings {
-      margin-top: 20px;
+    .controls {
+      margin-top: 30px;
       text-align: center;
     }
 
     button {
       margin: 5px;
-      padding: 8px 15px;
-      font-size: 14px;
+      padding: 8px 16px;
+      font-size: 16px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
       background: #ffcc00;
@@ -76,57 +42,25 @@
     button:hover {
       background: #ffd633;
     }
-
-    input {
-      padding: 5px;
-      margin: 5px;
-      font-size: 14px;
-      border-radius: 4px;
-      border: none;
-      text-align: center;
-      width: 80px;
-    }
   </style>
 </head>
 <body>
 
-  <!-- řádek s týmy a prostředním blokem -->
-  <div class="scoreboard">
-    <div class="team" id="teamA">Sparta</div>
-    
-    <div class="center-block">
-      <div class="middle" id="score">0:0</div>
-      <div id="timer">00:00</div>
-    </div>
-    
-    <div class="team" id="teamB">Baník</div>
-  </div>
+  <div id="timer">00:00</div>
 
-  <!-- ovládací prvky -->
   <div class="controls">
     <button onclick="startTimer()">▶ Start</button>
     <button onclick="pauseTimer()">⏸ Pauza</button>
-    <button onclick="resetAll()">🔄 Reset vše</button>
+    <button onclick="resetTimer()">🔄 Reset</button>
     <br>
-    <button onclick="goal('A')">⚽ +1 Sparta</button>
-    <button onclick="removeGoal('A')">➖ -1 Sparta</button>
-    <button onclick="goal('B')">⚽ +1 Baník</button>
-    <button onclick="removeGoal('B')">➖ -1 Baník</button>
-  </div>
-
-  <!-- nastavení času -->
-  <div class="settings">
-    <h3>Nastavení</h3>
-    Aktuální čas (min:sek): 
-    <input type="text" id="manualTime" value="00:00">
-    <button onclick="setManualTime()">⏱ Nastavit</button>
+    <button onclick="addSecond()">➕ +1 sekunda</button>
+    <button onclick="removeSecond()">➖ -1 sekunda</button>
   </div>
 
   <script>
     let timer;
     let seconds = 0;
     let running = false;
-    let goals = { A: 0, B: 0 };
 
     function formatTime(sec) {
       let mins = Math.floor(sec / 60);
@@ -153,36 +87,20 @@
       clearInterval(timer);
     }
 
-    function resetAll() {
+    function resetTimer() {
       pauseTimer();
       seconds = 0;
-      goals = { A: 0, B: 0 };
-      document.getElementById("score").textContent = "0:0";
       updateTimer();
     }
 
-    function goal(team) {
-      goals[team]++;
-      updateScore();
+    function addSecond() {
+      seconds++;
+      updateTimer();
     }
 
-    function removeGoal(team) {
-      if (goals[team] > 0) goals[team]--;
-      updateScore();
-    }
-
-    function updateScore() {
-      document.getElementById("score").textContent =
-        goals.A + ":" + goals.B;
-    }
-
-    function setManualTime() {
-      let val = document.getElementById("manualTime").value;
-      let parts = val.split(":");
-      if (parts.length === 2) {
-        let mins = parseInt(parts[0]) || 0;
-        let secs = parseInt(parts[1]) || 0;
-        seconds = mins * 60 + secs;
+    function removeSecond() {
+      if (seconds > 0) {
+        seconds--;
         updateTimer();
       }
     }
