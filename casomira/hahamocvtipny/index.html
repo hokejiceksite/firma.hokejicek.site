@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin:0; overflow:hidden; background:white; }
+    .widget {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      color: #000;
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .panel.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget">
+    <div class="panel active" id="news1">
+      V Manchesteru útok: 2 mrtví, několik zraněných.
+    </div>
+    <div class="panel" id="news2">
+      USA čelí vládnímu shutdownu kvůli rozpočtu.
+    </div>
+    <div class="panel" id="news3">
+      Trump a Netanjahu představili plán Gazy; čelí kritice.
+    </div>
+  </div>
+
+  <script>
+    const panels = [
+      document.getElementById("news1"),
+      document.getElementById("news2"),
+      document.getElementById("news3")
+    ];
+    let idx = 0;
+    setInterval(() => {
+      panels[idx].classList.remove("active");
+      idx = (idx + 1) % panels.length;
+      panels[idx].classList.add("active");
+    }, 7000); // mění se každých 7 sekund
+  </script>
+</body>
+</html>
